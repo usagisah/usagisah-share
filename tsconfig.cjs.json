@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                                     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "CommonJS",                                /* Specify what module code is generated. */
+    "lib": ["ESNext", "DOM"],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    "useDefineForClassFields": true,                  /* Emit ECMAScript-standard-compliant class fields. */
+    "baseUrl": ".",     
+    "outDir": "dist/cjs",                             /* Specify the root folder within your source files. */
+    "moduleResolution": "node",                        /* Allow accessing UMD globals from modules. */
+    "resolveJsonModule": true,                                    /* Specify an output folder for all emitted files. */
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    "noPropertyAccessFromIndexSignature": true,       /* Enforces using indexed accessors for keys declared using an indexed type */
+    "skipLibCheck": true,
+    "declaration": true,
+    "jsx": "react",
+    "noEmit": false,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "sourceMap": true
+  },
+  "include": ["./lib/*.ts", "./lib/*.tsx"],
+  "exclude": ["react"]
+}
