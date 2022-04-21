@@ -6,7 +6,7 @@ const _undefined: undefined = void 0
  * @example isString(1)
  */
 export const isString = (value: unknown): value is string => {
-  return typeof value === 'string'
+  return typeof value === "string"
 }
 
 /**
@@ -14,28 +14,28 @@ export const isString = (value: unknown): value is string => {
  * @example isBoolean(0)
  */
 export const isBoolean = (value: unknown): value is boolean => {
-  return typeof value === 'boolean'
+  return typeof value === "boolean"
 }
 
 /**
  * @description 是否是数字
  */
 export const isNumber = (value: unknown): value is number => {
-  return typeof value === 'number'
+  return typeof value === "number"
 }
 
 /**
  * @description 是否是函数
  */
 export const isFunction = (value: unknown): value is (...arg: any[]) => any => {
-  return typeof value === 'function'
+  return typeof value === "function"
 }
 
 /**
  * @description 是否是symbol
  */
 export const isSymbol = (value: unknown): value is symbol => {
-  return typeof value === 'symbol'
+  return typeof value === "symbol"
 }
 
 /**
@@ -63,14 +63,14 @@ export const isEmpty = (value: unknown) => {
  * @description 是否是 new Map 的实例
  */
 export const isMap = (value: unknown): value is Map<any, any> => {
-  return _toString.call(value) === '[object Map]'
+  return _toString.call(value) === "[object Map]"
 }
 
 /**
  * @description 是否是 new Set 的实例
  */
 export const isSet = (value: unknown): value is Set<any> => {
-  return toString.call(value) === '[object Set]'
+  return toString.call(value) === "[object Set]"
 }
 
 /**
@@ -96,7 +96,7 @@ export const isObject = <
 >(
   value: unknown
 ): value is Record<K, V> => {
-  return _toString.call(value) === '[object Object]'
+  return !Array.isArray(value) && value !== null && typeof value === "object"
 }
 
 /**
@@ -104,35 +104,31 @@ export const isObject = <
  */
 export const isPromise = <T = any>(value: unknown): value is Promise<T> => {
   return (
-    isObject(value) && isFunction(value['then']) && isFunction(value['catch'])
+    isObject(value) && isFunction(value["then"]) && isFunction(value["catch"])
   )
 }
 
 /**
  * @description 是否是字符串数字
- * @example isNumberString( ”123“ )
+ * @example isNumberString( ”123“ )//true
  */
 export const isNumberString = (value: unknown): value is number => {
-  return isNaN(Number(value))
+  return !isNaN(Number(value))
 }
 
 const rgbColor =
-  /^rgb\((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),){2}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\)$/
+  /^rgb\((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\s*,\s*){2}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\)$/
 const rgbaColor =
-  /^rgba\((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]),){3}(0?\.\d|1(\.0)?|0(\.0)?)\)$/
+  /^rgba\((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\s*,\s*){3}(0?\.\d|1(\.0)?|0(\.0)?)\)$/
 const rgbColorPercent =
   /^rgb\((([0-9]%|[1-9][0-9]%|100%),){2}([0-9]%|[1-9][0-9]%|100%)\)/
 const rgbaColorPercent =
   /^rgba\((([0-9]%|[1-9][0-9]%|100%),){3}(0?\.\d|1(\.0)?|0(\.0)?)\)/
 const hexcolor = /^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$/i
-const hslComma =
-  /^hsla?\(((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?))(deg|grad|rad|turn)?(,(\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%){2}(,((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%?))?\)$/i
-const hslSpace =
-  /^hsla?\(((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?))(deg|grad|rad|turn)?(\s(\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%){2}\s?(\/\s((\+|\-)?([0-9]+(\.[0-9]+)?(e(\+|\-)?[0-9]+)?|\.[0-9]+(e(\+|\-)?[0-9]+)?)%?)\s?)?\)$/i
 /**
  * @description 是否是 rgba 格式的颜色
  */
-export const IsRgbaColor = (value: unknown): boolean => {
+export const isRgbaColor = (value: unknown): boolean => {
   return isString(value)
     ? rgbaColor.test(value) || rgbaColorPercent.test(value)
     : false
@@ -140,7 +136,7 @@ export const IsRgbaColor = (value: unknown): boolean => {
 /**
  * @description 是否是 rgb 格式的颜色
  */
-export const IsRgbColor = (value: unknown): boolean => {
+export const isRgbColor = (value: unknown): boolean => {
   return isString(value)
     ? rgbColor.test(value) || rgbColorPercent.test(value)
     : false
@@ -148,18 +144,6 @@ export const IsRgbColor = (value: unknown): boolean => {
 /**
  * @description 是否是 十六进制 格式的颜色
  */
-export const IsHexColor = (value: unknown): boolean => {
+export const isHexColor = (value: unknown): boolean => {
   return isString(value) ? hexcolor.test(value) : false
 }
-/**
- * @description 是否是 HSL 格式的颜色
- */
-export const IsHSLColor = (value: unknown): boolean => {
-  return isString(value)
-    ? value.indexOf('.') !== -1
-      ? hslComma.test(value)
-      : hslSpace.test(value)
-    : false
-}
-
-

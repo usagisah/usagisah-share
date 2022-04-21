@@ -1,5 +1,5 @@
 import { Func, Obj } from "./type"
-import { isPromise } from "./validate"
+import { isObject, isPromise } from "./validate"
 
 /**
  * @description 深拷贝
@@ -13,7 +13,7 @@ export function deepClone<T extends Obj | Array<any>>(target: T): T {
     target.forEach((e, i) => {
       res[i] = deepClone(e)
     })
-  } else if (typeof target === 'object') {
+  } else if (isObject(target)) {
     if (reference.includes((target as any).constructor)) {
       res = new (target as any).constructor(target)
     } else if (target !== null) {
@@ -68,14 +68,14 @@ export const delay = (time: number = 0) => {
 /**
  * @description 占位空函数
  */
-export function noop<T>(arg: T): T {
+export function noop<T>(arg?: T): T | undefined {
   return arg
 }
 
 /**
  * @description 占位promise
  */
-export function noopPromise<T>(arg: T | Promise<T>): Promise<T> {
+export function noopPromise<T>(arg?: T | Promise<T>): Promise<T | undefined> {
   return isPromise(arg)
     ? arg.then(
         v => v,
@@ -89,6 +89,6 @@ export function noopPromise<T>(arg: T | Promise<T>): Promise<T> {
 /**
  * @description 占位错误函数
  */
-export function noopError(arg: string): never {
+export function noopError(arg?: string): never {
   throw Error(arg)
 }

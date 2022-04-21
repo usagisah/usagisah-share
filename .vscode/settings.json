@@ -1,5 +1,10 @@
 {
   "cSpell.words": [
-    "usagisah"
-  ]
+    "usagisah",
+    "vite",
+    "vitest"
+  ],
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

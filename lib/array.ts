@@ -64,5 +64,3 @@ export function shuffle<T>(array: T[]): T[] {
   }
   return [...array].sort(() => Math.random() - 0.5)
 }
-
-console.log( shuffle([1, 2, 3, 4, 5]) )

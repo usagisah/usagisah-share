@@ -19,13 +19,17 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:cjs": "tsc -p ./tsconfig.cjs.json",
     "build:esm": "tsc -p ./tsconfig.esm.json",
-    "format": "prettier --w ./lib/**/*.ts"
-  },
-  "devDependencies": {
-    "prettier": "^2.6.2",
-    "prettier-config-usagisah": "^1.0.1"
+    "format": "prettier --w ./lib/**/*.ts",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "usagisah-share": "link:"
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "prettier-config-usagisah": "^1.0.1",
+    "vite": "^2.9.5",
+    "vitest": "^0.9.3"
   }
 }
