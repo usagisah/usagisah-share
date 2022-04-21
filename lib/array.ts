@@ -55,26 +55,14 @@ export function composeAsync(...fns: Func[]) {
 /**
  * @description 打乱数组中的元素顺序
  */
-export function shuffle<T extends any[]>(array: T): T {
+export function shuffle<T>(array: T[]): T[] {
   if (array.length < 2) {
     return array
   }
   if (array.length === 2) {
-    return [array[1], array[0]] as T
+    return [array[1], array[0]]
   }
-  
-  const result = [] as any
-  const map = new Map<number, boolean>()
-  while(true) {
-    const index = Math.floor(Math.random() * array.length)
-    if (map.has(index)) {
-      continue
-    }
-    map.set(index, true)
-    result.push(array[index])
-    if (result.length === array.length) {
-      break
-    }
-  }
-  return result
+  return [...array].sort(() => Math.random() - 0.5)
 }
+
+console.log( shuffle([1, 2, 3, 4, 5]) )
