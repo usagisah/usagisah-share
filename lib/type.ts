@@ -16,9 +16,13 @@ export type Primitive = null | undefined | string | number | boolean | symbol | 
  */
 export type BuildAry<T extends number, R extends any[] = []> = R["length"] extends T ? R : BuildAry<T, [...R, any]>
 
+type SplitHelper<S extends string, L extends string, R extends string[] = []> = S extends `${infer item}${L}${infer rest}` ? SplitHelper<rest, L, [...R, item]> : R
 /**
  * 将字符串切割成数组
  */
-type SplitHelper<S extends string, L extends string, R extends string[] = []> = S extends `${infer item}${L}${infer rest}` ? SplitHelper<rest, L, [...R, item]> : R
 export type Split<S extends string, L extends string = ""> = SplitHelper<S, L>
 
+/**
+ * 将对象拉平
+ */
+export type Flatten<T extends object> = { [K in keyof T]: T[K] }
