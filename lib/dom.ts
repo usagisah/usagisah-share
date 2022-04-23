@@ -11,8 +11,7 @@ export function $(
   all: true
 ): ReturnType<typeof document.querySelectorAll>
 export function $(sel: string, all: any = false): any {
-  const query = document[all ? 'querySelectorAll' : 'querySelector'] as any
-  return query(sel)
+  return all ? document.querySelectorAll(sel) : document.querySelector(sel)
 }
 
 /**
@@ -86,10 +85,13 @@ export function useFps(timer = 1000): Promise<number> {
 export function useQueryParams(search?: string): Record<string, string> {
   const str = isString(search) ? search : globalThis.location.search.slice(1)
   const query = Object.fromEntries(
-    str.split('&').map(item => {
+    str.split('&').reduce<[string, string][]>((acc, item) => {
       const temp = item.split('=')
-      return [temp[0], decodeURIComponent(temp[1])]
-    })
+      if (temp[0] && temp[1]) {
+        acc.push([temp[0], decodeURIComponent(temp[1])])
+      }
+      return acc
+    }, [])
   )
   return query
 }

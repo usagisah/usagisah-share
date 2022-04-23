@@ -27,6 +27,7 @@
     "usagisah-share": "link:"
   },
   "devDependencies": {
+    "jsdom": "^19.0.0",
     "prettier": "^2.6.2",
     "prettier-config-usagisah": "^1.0.1",
     "vite": "^2.9.5",
