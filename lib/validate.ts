@@ -88,7 +88,7 @@ export const isArray = <T = any>(value: unknown): value is Array<T> => {
 }
 
 /**
- * @description 是否是对象
+ * @description 是否是对象, 非严格意义的对象，即不是 null, undefined, 数组
  */
 export const isObject = <
   K extends string | number | symbol = string | number | symbol,
@@ -97,6 +97,13 @@ export const isObject = <
   value: unknown
 ): value is Record<K, V> => {
   return !Array.isArray(value) && value !== null && typeof value === "object"
+}
+
+/**
+ * @description 是否是纯对象，即严格意义的对象，即{}方式的
+ */
+export const isPlainObject = (value: unknown): value is Record<any, any> => {
+  return _toString.call(value) === "[object Object]"
 }
 
 /**
