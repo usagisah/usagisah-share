@@ -40,3 +40,19 @@ export declare function useFromQueryParams(query: Record<string, string>): strin
 export declare function onEventOutside<T = Event>(target: HTMLElement | string, cb: (e: T) => unknown, options: {
     type: string;
 }): () => void;
+/**
+ * @description 给document注册一个相反的事件，当触发事件的目标在监听元素之外才会触发回调函数
+ * @param {HTMLElement[]} targets 监听元素的元素列表
+ * @param {string} type 监听的事件类型
+ * @param {(event: HTMLElementEventMap[K]) => void} listener 回调函数
+ *
+ * @example
+ * const stop = useOutEventListener(
+ *  [div, span],
+ *  "click",
+ *  () => console.log(1)
+ * )
+ *
+ * stop()
+ */
+export declare function useOutEventListener<K extends keyof HTMLElementEventMap>(target: HTMLElement[], type: K, listener: (event: HTMLElementEventMap[K]) => void): () => void;

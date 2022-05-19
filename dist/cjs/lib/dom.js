@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.onEventOutside = exports.useFromQueryParams = exports.useQueryParams = exports.useFps = exports.setAnimationFrame = exports.$ = void 0;
+exports.useOutEventListener = exports.onEventOutside = exports.useFromQueryParams = exports.useQueryParams = exports.useFps = exports.setAnimationFrame = exports.$ = void 0;
 const validate_1 = require("./validate");
 function $(sel, all = false) {
-    const query = document[all ? 'querySelectorAll' : 'querySelector'];
-    return query(sel);
+    return all ? document.querySelectorAll(sel) : document.querySelector(sel);
 }
 exports.$ = $;
 /**
@@ -72,10 +71,13 @@ exports.useFps = useFps;
  */
 function useQueryParams(search) {
     const str = (0, validate_1.isString)(search) ? search : globalThis.location.search.slice(1);
-    const query = Object.fromEntries(str.split('&').map(item => {
+    const query = Object.fromEntries(str.split('&').reduce((acc, item) => {
         const temp = item.split('=');
-        return [temp[0], decodeURIComponent(temp[1])];
-    }));
+        if (temp[0] && temp[1]) {
+            acc.push([temp[0], decodeURIComponent(temp[1])]);
+        }
+        return acc;
+    }, []));
     return query;
 }
 exports.useQueryParams = useQueryParams;
@@ -114,4 +116,52 @@ function onEventOutside(target, cb, options) {
     };
 }
 exports.onEventOutside = onEventOutside;
+const mountTypeMap = new Map();
+const docEventSet = new Set();
+const doc = document.documentElement;
+/**
+ * @description 给document注册一个相反的事件，当触发事件的目标在监听元素之外才会触发回调函数
+ * @param {HTMLElement[]} targets 监听元素的元素列表
+ * @param {string} type 监听的事件类型
+ * @param {(event: HTMLElementEventMap[K]) => void} listener 回调函数
+ *
+ * @example
+ * const stop = useOutEventListener(
+ *  [div, span],
+ *  "click",
+ *  () => console.log(1)
+ * )
+ *
+ * stop()
+ */
+function useOutEventListener(target, type, listener) {
+    const item = { type, target, listener };
+    docEventSet.add(item);
+    const listenerEvent = (e) => {
+        for (const item of [...docEventSet]) {
+            const { type: uType, target, listener } = item;
+            if (type !== uType) {
+                continue;
+            }
+            if (target.some(t => t.contains(e.target))) {
+                return;
+            }
+            listener(e);
+        }
+    };
+    if (!mountTypeMap.has(type)) {
+        mountTypeMap.set(type, listener);
+        doc.addEventListener(type, listenerEvent);
+    }
+    return function stopListener() {
+        docEventSet.delete(item);
+        mountTypeMap.forEach((listener, type) => {
+            if ([...docEventSet].every(item => item.type !== type)) {
+                doc.removeEventListener(type, listener);
+                mountTypeMap.delete(type);
+            }
+        });
+    };
+}
+exports.useOutEventListener = useOutEventListener;
 //# sourceMappingURL=dom.js.map

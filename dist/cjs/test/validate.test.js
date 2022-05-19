@@ -59,6 +59,15 @@ const validate_1 = require("../lib/validate");
         (0, vitest_1.expect)((0, validate_1.isObject)({})).toBe(true);
     });
 });
+(0, vitest_1.describe)("validate isPlainObject", () => {
+    (0, vitest_1.test)("isPlainObject", () => {
+        (0, vitest_1.expect)((0, validate_1.isPlainObject)([])).toBe(false);
+        (0, vitest_1.expect)((0, validate_1.isPlainObject)(null)).toBe(false);
+        (0, vitest_1.expect)((0, validate_1.isPlainObject)(Promise.resolve(1))).toBe(false);
+        (0, vitest_1.expect)((0, validate_1.isPlainObject)(new Map())).toBe(false);
+        (0, vitest_1.expect)((0, validate_1.isPlainObject)({})).toBe(true);
+    });
+});
 (0, vitest_1.describe)("validate isPromise", () => {
     (0, vitest_1.test)("isPromise", () => {
         (0, vitest_1.expect)((0, validate_1.isPromise)({})).toBe(false);

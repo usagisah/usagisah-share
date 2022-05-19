@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isHexColor = exports.isRgbColor = exports.isRgbaColor = exports.isNumberString = exports.isPromise = exports.isObject = exports.isArray = exports.isDate = exports.isSet = exports.isMap = exports.isEmpty = exports.isNull = exports.isUndefined = exports.isSymbol = exports.isFunction = exports.isNumber = exports.isBoolean = exports.isString = void 0;
+exports.isHexColor = exports.isRgbColor = exports.isRgbaColor = exports.isNumberString = exports.isPromise = exports.isPlainObject = exports.isObject = exports.isArray = exports.isDate = exports.isSet = exports.isMap = exports.isEmpty = exports.isNull = exports.isUndefined = exports.isSymbol = exports.isFunction = exports.isNumber = exports.isBoolean = exports.isString = void 0;
 const _toString = Object.prototype.toString;
 const _undefined = void 0;
 /**
@@ -90,12 +90,19 @@ const isArray = (value) => {
 };
 exports.isArray = isArray;
 /**
- * @description 是否是对象
+ * @description 是否是对象, 非严格意义的对象，即不是 null, undefined, 数组
  */
 const isObject = (value) => {
     return !Array.isArray(value) && value !== null && typeof value === "object";
 };
 exports.isObject = isObject;
+/**
+ * @description 是否是纯对象，即严格意义的对象，即{}方式的
+ */
+const isPlainObject = (value) => {
+    return _toString.call(value) === "[object Object]";
+};
+exports.isPlainObject = isPlainObject;
 /**
  * @description 是否是 Promise
  */

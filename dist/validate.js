@@ -75,10 +75,16 @@ export const isArray = (value) => {
     return Array.isArray(value);
 };
 /**
- * @description 是否是对象
+ * @description 是否是对象, 非严格意义的对象，即不是 null, undefined, 数组
  */
 export const isObject = (value) => {
     return !Array.isArray(value) && value !== null && typeof value === "object";
+};
+/**
+ * @description 是否是纯对象，即严格意义的对象，即{}方式的
+ */
+export const isPlainObject = (value) => {
+    return _toString.call(value) === "[object Object]";
 };
 /**
  * @description 是否是 Promise

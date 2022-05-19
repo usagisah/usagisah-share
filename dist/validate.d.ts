@@ -49,9 +49,13 @@ export declare const isDate: (value: unknown) => value is Date;
  */
 export declare const isArray: <T = any>(value: unknown) => value is T[];
 /**
- * @description 是否是对象
+ * @description 是否是对象, 非严格意义的对象，即不是 null, undefined, 数组
  */
 export declare const isObject: <K extends string | number | symbol = string | number | symbol, V = any>(value: unknown) => value is Record<K, V>;
+/**
+ * @description 是否是纯对象，即严格意义的对象，即{}方式的
+ */
+export declare const isPlainObject: (value: unknown) => value is Record<any, any>;
 /**
  * @description 是否是 Promise
  */
