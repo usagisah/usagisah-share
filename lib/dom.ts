@@ -135,3 +135,63 @@ export function onEventOutside<T = Event>(
     document.removeEventListener(type, Event)
   }
 }
+
+
+const mountTypeMap = new Map<keyof HTMLElementEventMap, Function>()
+const docEventSet = new Set<{
+  type: keyof HTMLElementEventMap
+  target: HTMLElement[]
+  listener: Function
+}>()
+const doc = document.documentElement
+/**
+ * @description 给document注册一个相反的事件，当触发事件的目标在监听元素之外才会触发回调函数
+ * @param {HTMLElement[]} targets 监听元素的元素列表
+ * @param {string} type 监听的事件类型
+ * @param {(event: HTMLElementEventMap[K]) => void} listener 回调函数
+ * 
+ * @example
+ * const stop = useOutEventListener(
+ *  [div, span],
+ *  "click",
+ *  () => console.log(1)
+ * )
+ * 
+ * stop()
+ */
+export function useOutEventListener<K extends keyof HTMLElementEventMap>(
+  target: HTMLElement[],
+  type: K,
+  listener: (event: HTMLElementEventMap[K]) => void
+) {
+  const item = { type, target, listener }
+  docEventSet.add(item)
+
+  const listenerEvent = (e: any) => {
+    for (const item of [...docEventSet]) {
+      const { type: uType, target, listener } = item
+      if (type !== uType) {
+        continue
+      }
+      if (target.some(t => t.contains(e.target))) {
+        return
+      }
+      listener(e)
+    }
+  }
+
+  if (!mountTypeMap.has(type)) {
+    mountTypeMap.set(type, listener)
+    doc.addEventListener(type, listenerEvent)
+  }
+
+  return function stopListener() {
+    docEventSet.delete(item)
+    mountTypeMap.forEach((listener, type) => {
+      if ([...docEventSet].every(item => item.type !== type)) {
+        doc.removeEventListener(type, listener as any)
+        mountTypeMap.delete(type)
+      }
+    })
+  }
+}

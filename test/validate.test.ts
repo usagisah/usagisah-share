@@ -17,7 +17,8 @@ import {
   isSymbol,
   isHexColor,
   isRgbColor,
-  isRgbaColor
+  isRgbaColor,
+  isPlainObject
 } from "../lib/validate"
 
 describe("validate isString", () => {
@@ -80,6 +81,16 @@ describe("validate isObject", () => {
     expect(isObject(Promise.resolve(1))).toBe(true)
     expect(isObject(new Map())).toBe(true)
     expect(isObject({})).toBe(true)
+  })
+})
+
+describe("validate isPlainObject", () => {
+  test("isPlainObject", () => {
+    expect(isPlainObject([])).toBe(false)
+    expect(isPlainObject(null)).toBe(false)
+    expect(isPlainObject(Promise.resolve(1))).toBe(false)
+    expect(isPlainObject(new Map())).toBe(false)
+    expect(isPlainObject({})).toBe(true)
   })
 })
 
