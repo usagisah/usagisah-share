@@ -34,17 +34,17 @@ export function deepClone<T extends Obj | Array<any>>(target: T): T {
  * @description 没有延时的异步函数
  */
 export const asyncCallback = (function createAsyncFactory() {
-  let fn: Func = () => { }
-  if ('setImmediate' in globalThis) {
+  let fn: Func = () => {}
+  if ("setImmediate" in globalThis) {
     fn = globalThis.setImmediate
   } else if (MessageChannel) {
     const { port1, port2 } = new MessageChannel()
     const useAsyncInfo = {
-      cb: () => { }
+      cb: () => {}
     }
     port2.onmessage = () => {
       useAsyncInfo.cb()
-      useAsyncInfo.cb = () => { }
+      useAsyncInfo.cb = () => {}
     }
     fn = () => port1.postMessage(null)
   } else {
@@ -91,4 +91,27 @@ export function noopPromise<T>(arg?: T | Promise<T>): Promise<T | undefined> {
  */
 export function noopError(arg?: string): never {
   throw Error(arg)
+}
+
+/**
+ * @description 二进制流转base64，
+ * 比如将二进制图片流转换为base64作为图片链接
+ * 
+ * @description 需要将 axios/fetch/ajax 的返回类型(responseType)设置成"arraybuffer"
+ * 
+ * @param {arraybuffer} data 二进制流
+ * @param {string} type 转换的类型
+ * 
+ * @example
+ * const res = await bufferToBase64(data, "image/jpeg")
+ */
+export function bufferToBase64(data: BlobPart, type: string): Promise<string> {
+  return new Promise((resolve) => {
+    const blob = new Blob([data], { type })
+    let reader = new FileReader()
+    reader.onload = function (e) {
+      resolve(e.target!.result as string)
+    }
+    reader.readAsDataURL(blob)
+  })
 }

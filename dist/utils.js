@@ -34,7 +34,7 @@ export function deepClone(target) {
  */
 export const asyncCallback = (function createAsyncFactory() {
     let fn = () => { };
-    if ('setImmediate' in globalThis) {
+    if ("setImmediate" in globalThis) {
         fn = globalThis.setImmediate;
     }
     else if (MessageChannel) {
@@ -84,5 +84,27 @@ export function noopPromise(arg) {
  */
 export function noopError(arg) {
     throw Error(arg);
+}
+/**
+ * @description 二进制流转base64，
+ * 比如将二进制图片流转换为base64作为图片链接
+ *
+ * @description 需要将 axios/fetch/ajax 的返回类型(responseType)设置成"arraybuffer"
+ *
+ * @param {arraybuffer} data 二进制流
+ * @param {string} type 转换的类型
+ *
+ * @example
+ * const res = await bufferToBase64(data, "image/jpeg")
+ */
+export function bufferToBase64(data, type) {
+    return new Promise((resolve) => {
+        const blob = new Blob([data], { type });
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            resolve(e.target.result);
+        };
+        reader.readAsDataURL(blob);
+    });
 }
 //# sourceMappingURL=utils.js.map

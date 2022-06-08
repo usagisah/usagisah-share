@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.noopError = exports.noopPromise = exports.noop = exports.delay = exports.asyncCallback = exports.deepClone = void 0;
+exports.bufferToBase64 = exports.noopError = exports.noopPromise = exports.noop = exports.delay = exports.asyncCallback = exports.deepClone = void 0;
 const validate_1 = require("./validate");
 /**
  * @description 深拷贝
@@ -38,7 +38,7 @@ exports.deepClone = deepClone;
  */
 exports.asyncCallback = (function createAsyncFactory() {
     let fn = () => { };
-    if ('setImmediate' in globalThis) {
+    if ("setImmediate" in globalThis) {
         fn = globalThis.setImmediate;
     }
     else if (MessageChannel) {
@@ -93,4 +93,27 @@ function noopError(arg) {
     throw Error(arg);
 }
 exports.noopError = noopError;
+/**
+ * @description 二进制流转base64，
+ * 比如将二进制图片流转换为base64作为图片链接
+ *
+ * @description 需要将 axios/fetch/ajax 的返回类型(responseType)设置成"arraybuffer"
+ *
+ * @param {arraybuffer} data 二进制流
+ * @param {string} type 转换的类型
+ *
+ * @example
+ * const res = await bufferToBase64(data, "image/jpeg")
+ */
+function bufferToBase64(data, type) {
+    return new Promise((resolve) => {
+        const blob = new Blob([data], { type });
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            resolve(e.target.result);
+        };
+        reader.readAsDataURL(blob);
+    });
+}
+exports.bufferToBase64 = bufferToBase64;
 //# sourceMappingURL=utils.js.map
