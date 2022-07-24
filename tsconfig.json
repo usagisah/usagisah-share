@@ -20,6 +20,6 @@
     "allowJs": true,
     "sourceMap": true
   },
-  "include": ["./lib/*.ts", "./lib/*.tsx", "./test/*.ts"],
+  "include": ["./lib/*.ts", "./lib/*.tsx", "./lib/*.d.ts", "./test/*.ts"],
   "exclude": ["react"]
 }

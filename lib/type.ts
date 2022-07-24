@@ -26,3 +26,8 @@ export type Split<S extends string, L extends string = ""> = SplitHelper<S, L>
  * 将对象拉平
  */
 export type Flatten<T extends object> = { [K in keyof T]: T[K] }
+
+/**
+ * 排除对象中的 undefined，以及 void 类型
+ */
+export type NoUndefined<T> = T extends undefined ? never : T

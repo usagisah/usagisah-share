@@ -42,7 +42,7 @@ export const isSymbol = (value: unknown): value is symbol => {
  * @description 是否是 undefined
  */
 export const isUndefined = (value: unknown): value is undefined => {
-  return value === undefined
+  return value === void undefined
 }
 
 /**
