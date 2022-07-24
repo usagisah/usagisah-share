@@ -44,7 +44,7 @@ exports.isSymbol = isSymbol;
  * @description 是否是 undefined
  */
 const isUndefined = (value) => {
-    return value === undefined;
+    return value === void undefined;
 };
 exports.isUndefined = isUndefined;
 /**

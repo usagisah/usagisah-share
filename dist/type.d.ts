@@ -25,4 +25,8 @@ export declare type Split<S extends string, L extends string = ""> = SplitHelper
 export declare type Flatten<T extends object> = {
     [K in keyof T]: T[K];
 };
+/**
+ * 排除对象中的 undefined，以及 void 类型
+ */
+export declare type NoUndefined<T> = T extends undefined ? never : T;
 export {};

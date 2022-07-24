@@ -36,7 +36,7 @@ export function deepClone<T extends Obj | Array<any>>(target: T): T {
 export const asyncCallback = (function createAsyncFactory() {
   let fn: Func = () => {}
   if ("setImmediate" in globalThis) {
-    fn = globalThis.setImmediate
+    fn = (globalThis as any).setImmediate
   } else if (MessageChannel) {
     const { port1, port2 } = new MessageChannel()
     const useAsyncInfo = {

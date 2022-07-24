@@ -36,7 +36,7 @@ export const isSymbol = (value) => {
  * @description 是否是 undefined
  */
 export const isUndefined = (value) => {
-    return value === undefined;
+    return value === void undefined;
 };
 /**
  * @description 是否是 null
